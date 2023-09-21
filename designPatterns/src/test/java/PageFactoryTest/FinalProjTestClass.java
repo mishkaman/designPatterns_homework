@@ -24,7 +24,6 @@ public class FinalProjTestClass extends ConfigTests {
     @BeforeClass
     public void setup(){
         WebDriverManager.chromedriver().setup();
-        driver.manage().window().maximize();
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
 
