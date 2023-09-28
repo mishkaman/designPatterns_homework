@@ -6,8 +6,8 @@
     import io.qameta.allure.selenide.AllureSelenide;
     import jdk.jfr.Label;
     import org.example.TestCategorizer;
-    import org.testng.annotations.AfterClass;
-    import org.testng.annotations.Test;
+    import org.testng.ITestResult;
+    import org.testng.annotations.*;
 
     import static com.codeborne.selenide.Configuration.*;
     import static com.codeborne.selenide.FileDownloadMode.HTTPGET;
@@ -25,11 +25,8 @@
     import org.openqa.selenium.WebDriver;
     import org.openqa.selenium.chrome.ChromeDriver;
     import org.testng.asserts.SoftAssert;
-    import org.testng.annotations.BeforeClass;
 
     import java.util.concurrent.TimeUnit;
-
-    import org.testng.annotations.BeforeSuite;
 
     import static com.github.automatedowl.tools.AllureEnvironmentWriter.allureEnvironmentWriter;
 
@@ -37,8 +34,10 @@
     @Feature("Seat Selection")
     public class TestClass extends ConfigTests {
         private SoftAssert softAssert = new SoftAssert();
+        private TestCategorizer categorizer;
         public static WebDriver driver;
         public TestClass() {
+            categorizer = new TestCategorizer("C:\\Users\\mishk\\Desktop\\1212\\designPatterns_homework\\designPatterns\\src\\main\\resources\\allure-results\\categories.json");
             holdBrowserOpen = false;
             reopenBrowserOnFail = true;
             screenshots = true;
@@ -63,11 +62,10 @@
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         }
 
-
+        @Label("Category")
         @Description("The test navigates to the Movies section chooses a certain movie and click on the last date and last seance available, afterwards click s on the first free seat on a specific movie.")
         @Severity(SeverityLevel.TRIVIAL)
         @Story("Task1 performs all the required actions")
-        @Label("Category")
         @Test
         public void Task1() {
             HomePageAPISteps homePageAPISteps = new HomePageAPISteps(driver);
@@ -89,6 +87,14 @@
                              .chooseAFreeSeat();
 
             }
+        @AfterMethod
+        public void categorizeAndAddLabels(ITestResult result) {
+            String message = result.getThrowable().getMessage();
+            boolean testResultFailed = result.getStatus() == ITestResult.FAILURE;
+
+            String category = categorizer.categorizeTestResult(message, testResultFailed);
+
+        }
         @AfterClass
         public void breakdown(){
             driver.close();

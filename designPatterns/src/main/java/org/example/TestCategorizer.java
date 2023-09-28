@@ -1,35 +1,31 @@
 package org.example;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.List;
-import java.util.Map;
+import java.util.stream.Collectors;
 
 public class TestCategorizer {
-    private List<Map<String, Object>> categories;
+    private List<Category> categories;
 
     public TestCategorizer(String filePath) {
-        ObjectMapper objectMapper = new ObjectMapper();
         try {
-            categories = objectMapper.readValue(new File(filePath),
-                    new TypeReference<List<Map<String, Object>>>() {});
+            String content = Files.readString(Paths.get(filePath));
+            categories = Category.fromJsonArray(content);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public String categorizeTestResult(String message, boolean testResultFailed) {
-        for (Map<String, Object> category : categories) {
-            String categoryName = (String) category.get("name");
-            List<String> matchedStatuses = (List<String>) category.get("matchedStatuses");
-            String messageRegex = (String) category.get("messageRegex");
-
-            if (matchedStatuses.contains("failed") && testResultFailed && message.matches(messageRegex)) {
-                return categoryName;
+        if (testResultFailed) {
+            for (Category category : categories) {
+                if (category.matches(message)) {
+                    return category.getName();
+                }
             }
         }
-        return "Uncategorized";
+        return "Other"; // Default category if no match
     }
 }
