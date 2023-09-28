@@ -6,5 +6,8 @@ import org.openqa.selenium.WebDriver;
 public class HomePageAPI {
     private static String PAGE_URL = "https://www.swoop.ge/";
 
-    public By kinoButtonLocator = By.linkText("კინო");
+    public By getButtonLocatorByName(String buttonName) {
+        return By.linkText(buttonName);
+    }
+
 }

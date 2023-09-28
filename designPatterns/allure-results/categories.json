@@ -1,0 +1,21 @@
+[
+  {
+    "name": "Critical",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*Critical.*"
+  },
+  {
+    "name": "High",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*High.*"
+  },
+  {
+    "name": "Medium",
+    "matchedStatuses": ["failed"],
+    "messageRegex": ".*Medium.*"
+  },
+  {
+    "name": "Custom",
+    "traceRegex": ".*custom-trace.*"
+  }
+]

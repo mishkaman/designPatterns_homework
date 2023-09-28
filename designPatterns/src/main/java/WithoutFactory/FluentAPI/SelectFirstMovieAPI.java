@@ -10,11 +10,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.time.Duration;
 
 public class SelectFirstMovieAPI {
-    private WebDriver driver;
-    private Actions actions;
-    private WebDriverWait wait;
 
-    public By firstMovieLocator = By.xpath("//div[@class='movies-deal'][2]");
+    public By firstMovieLocator = By.xpath("//div[@class='movies-deal'][3]");
     public By buyButtonLocator = By.linkText("ყიდვა");
 
 
