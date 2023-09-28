@@ -37,7 +37,7 @@
         private TestCategorizer categorizer;
         public static WebDriver driver;
         public TestClass() {
-            categorizer = new TestCategorizer("C:\\Users\\mishk\\Desktop\\1212\\designPatterns_homework\\designPatterns\\src\\main\\resources\\allure-results\\categories.json");
+            categorizer = new TestCategorizer("src/allure-results/categories.json");
             holdBrowserOpen = false;
             reopenBrowserOnFail = true;
             screenshots = true;
@@ -52,7 +52,7 @@
                             .put("Browser", "Chrome")
                             .put("URL", "https://www.swoop.ge/")
                             .build(), System.getProperty("user.dir")
-                            + "/allure-results/");
+                            + "/src/allure-results/");
         }
 
         @BeforeClass
