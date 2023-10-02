@@ -4,46 +4,57 @@ import WithoutFactory.FluentAPI.PopupSeatAPI;
 import io.qameta.allure.Step;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
+import java.time.Duration;
 import java.util.List;
 
 public class PopupSeatAPISteps {
+
     PopupSeatAPI popupSeatAPI = new PopupSeatAPI();
+
+    SoftAssert softAssert = new SoftAssert();
     private WebDriver driver;
+    private WebDriverWait wait;
+    SeancePageAPISteps seancePageAPISteps = new SeancePageAPISteps(driver);
     public PopupSeatAPISteps(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    @Step
+    @Step("Validating if the Movie details are correct")
     public PopupSeatAPISteps checkingMovieNameCinemaDatetime() {
-        WebElement movieTitleElement = driver.findElement(popupSeatAPI.movieTitleElementLocator);
-        List<WebElement> cinemaElements = driver.findElements(popupSeatAPI.cinemaElementsLocator);
-        WebElement movieTitleEx = driver.findElement(popupSeatAPI.movieTitleExLocator);
-        WebElement cinemaNameEx = driver.findElement(popupSeatAPI.cinemaNameExLocator);
-        WebElement ourDateOfChoice = driver.findElement(popupSeatAPI.ourDateOfChoiceLocator);
-        List<WebElement> vacantPlaces = driver.findElements(popupSeatAPI.vacantPlacesLocator);
+        WebElement contentHeader = wait.until(ExpectedConditions.visibilityOfElementLocated(popupSeatAPI.contentHeaderLocator));
+        WebElement movieTitleElement = contentHeader.findElement(popupSeatAPI.movieTitleElementLocator);
+        List<WebElement> cinemaElements = contentHeader.findElements(popupSeatAPI.cinemaElementsLocator);
+
 
         String movieTitle = movieTitleElement.getText();
         String cinemaName = cinemaElements.get(0).getText();
         String movieDate = cinemaElements.get(1).getText();
 
-        String expectedMovieTitle = movieTitleEx.getText();
-        String expectedCinemaName = cinemaNameEx.getText();
 
-        String Date = ourDateOfChoice.getText();
+
+        String expectedMovieTitle = driver.findElement(popupSeatAPI.movieTitleExLocator).getText();
+        String expectedCinemaName = driver.findElement(popupSeatAPI.cinemaNameExLocator).getText();
+
+
+        String Date = seancePageAPISteps.ourDateOfChoice.getText();
         String firstTwoOfDate = Date.substring(0, 2);
         String chosenSeanceTime = "chosensenaccetime= 18:00"; // Replace this with the actual string
         String timeOnly = chosenSeanceTime.split("=")[1].trim();
 
         String expectedMovieDate = firstTwoOfDate + " აგვისტო " + timeOnly;
 
-        Assert.assertEquals(movieTitle, expectedMovieTitle, "Movie name doesn't match");
-        Assert.assertEquals(cinemaName, expectedCinemaName, "Cinema doesn't match");
-        Assert.assertEquals(movieDate, expectedMovieDate, "Datetime doesn't match");
+        softAssert.assertEquals(movieTitle, expectedMovieTitle, "Movie name doesn't match");
+        softAssert.assertEquals(cinemaName, expectedCinemaName, "Cinema doesn't match");
+        softAssert.assertEquals(movieDate, expectedMovieDate, "Datetime doesn't match");
         System.out.println("movie name, cinema, and datetime are valid!");
         return this;
     }
-    @Step
+    @Step("Click on a free seat")
     public PopupSeatAPISteps chooseAFreeSeat() {
         List<WebElement> vacantPlaces = driver.findElements(popupSeatAPI.vacantPlacesLocator);
 

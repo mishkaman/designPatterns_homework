@@ -21,20 +21,20 @@ public class SelectFirstMovieAPISteps{
         this.actions = new Actions(driver);
         this.wait = new WebDriverWait(driver, Duration.ofSeconds(10));
     }
-    @Step
+    @Step("Scrolls to the chosen movie")
     public SelectFirstMovieAPISteps scrollToFirstMovie() {
         WebElement firstMovieElement = driver.findElement(selectFirstMovieAPI.firstMovieLocator);
         ((JavascriptExecutor) driver).executeScript("arguments[0].scrollIntoView(true);", firstMovieElement);
         return this;
     }
 
-    @Step
+    @Step("Hovers over the chosen movie")
     public SelectFirstMovieAPISteps hoverOverHomie() {
         WebElement firstMovie = driver.findElement(selectFirstMovieAPI.firstMovieLocator);
         actions.moveToElement(firstMovie).perform();
         return this;
     }
-    @Step
+    @Step("Clicks the button named 'ყიდვა'")
     public SelectFirstMovieAPISteps clickBuyButton() {
         WebElement buyButton = wait.until(ExpectedConditions.elementToBeClickable(driver.findElement(selectFirstMovieAPI.buyButtonLocator)));
         buyButton.click();

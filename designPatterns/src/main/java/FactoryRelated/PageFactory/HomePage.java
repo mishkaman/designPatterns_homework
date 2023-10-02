@@ -16,8 +16,4 @@ public class HomePage {
     @FindBy(how = How.LINK_TEXT, using = "კინო")
     public SelenideElement kinoButton;
 
-
-    public void clickOnKinoButton() {
-        kinoButton.click();
-    }
 }

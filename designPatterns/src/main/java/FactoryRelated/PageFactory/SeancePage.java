@@ -17,7 +17,7 @@ public class SeancePage {
     @FindBy(xpath = "//a[text() = 'კავეა ისთ ფოინთი']")
     public WebElement KaveIstPointButton;
 
-    @FindBys(@FindBy(xpath = "//div[@aria-expanded='true'][@aria-hidden='false'][@style='display: flex;']"))
+    @FindBys(@FindBy(css = "div[aria-expanded='true'][aria-hidden='false'][style='display: flex;']"))
     public List<WebElement> listOfSeances;
 
     @FindBy(xpath = ".//li[@class='ui-state-default ui-corner-top'][@aria-selected='false']")
